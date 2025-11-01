@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { scrollToSection } from "../lib/scrollToSection";
-import logo from "../assets/logo/Shh_logo.jpg";
+import logo from "../assets/logo/SHh_logo.jpg";
 
 const navItems = [
   { id: "home", label: "首頁" },

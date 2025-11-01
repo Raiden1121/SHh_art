@@ -12,12 +12,12 @@ import lineIcon from "../assets/logo/LINE_icon.png";
 import igIcon from "../assets/logo/ig_icon.png";
 import fbIcon from "../assets/logo/fb_icon.png";
 
-const dest = "24.154872666152865,120.64760951277422";
+const place = "台中市南屯區大容東街11號";
 const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(
-  dest
+  place
 )}&output=embed`;
 const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-  dest
+  place
 )}&travelmode=driving`;
 
 export default function Contact() {
@@ -165,12 +165,12 @@ export default function Contact() {
         </div>
 
         {/* 全寬：追蹤我們（線條跨兩欄，內容置中） */}
-        <div className="mt-10 md:mt-14 border-t border-gray-300">
-          <div className="pt-8 md:pt-10 text-center">
-            <p className="font-medium mb-4 text-sm md:text-base tracking-wide">
+        <div className="mt-10 md:mt-16 border-t border-gray-300">
+          <div className="pt-10 md:pt-12 text-center">
+            <p className="font-semibold mb-6 text-lg md:text-2xl tracking-wide text-gray-900">
               追蹤我們
             </p>
-            <div className="flex justify-center gap-6">
+            <div className="flex justify-center gap-10">
               <a
                 href="https://www.instagram.com/shh.artstudio?igsh=MXB4Nnl3bGwxdGth"
                 target="_blank"
@@ -179,7 +179,7 @@ export default function Contact() {
                 <img
                   src={igIcon}
                   alt="Instagram"
-                  className="w-12 h-12 md:w-14 md:h-14 hover:scale-110 transition-transform duration-200"
+                  className="w-16 h-16 md:w-20 md:h-20 hover:scale-110 transition-transform duration-200"
                 />
               </a>
               <a
@@ -190,7 +190,7 @@ export default function Contact() {
                 <img
                   src={fbIcon}
                   alt="Facebook"
-                  className="w-12 h-12 md:w-14 md:h-14 hover:scale-110 transition-transform duration-200"
+                  className="w-16 h-16 md:w-20 md:h-20 hover:scale-110 transition-transform duration-200"
                 />
               </a>
             </div>

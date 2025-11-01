@@ -12,16 +12,21 @@ import Contact from "./sections/Contact";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white pt-20 md:pt-24">
+    <>
+      {/* 導覽列要放在最外層，不要被 padding 包住 */}
       <Navigation />
-      <Home />
-      <About />
-      <Courses />
-      <Teachers />
-      <Gallery />
-      <FAQ />
-      <Contact />
-      <Footer />
-    </div>
+
+      {/* 主內容區塊預留導覽列高度 */}
+      <main className="min-h-screen bg-white pt-20 md:pt-24">
+        <Home />
+        <About />
+        <Courses />
+        <Teachers />
+        <Gallery />
+        <FAQ />
+        <Contact />
+        <Footer />
+      </main>
+    </>
   );
 }
