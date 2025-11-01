@@ -8,6 +8,10 @@ import {
   Clock,
 } from "lucide-react";
 
+import lineIcon from "../assets/logo/LINE_icon.png";
+import igIcon from "../assets/logo/ig_icon.png";
+import fbIcon from "../assets/logo/fb_icon.png";
+
 const dest = "24.154872666152865,120.64760951277422";
 const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(
   dest
@@ -55,10 +59,11 @@ export default function Contact() {
             {/* LINE 區塊 */}
             <div className="bg-white p-6 md:p-7 text-center rounded-md shadow-sm">
               <img
-                src="/logo/LINE_icon.png"
+                src={lineIcon}
                 alt="LINE Icon"
                 className="mx-auto mb-4 w-12 h-12 object-contain"
               />
+
               <p className="font-medium mb-2 text-sm md:text-base">
                 立即預約體驗
               </p>
@@ -172,7 +177,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
               >
                 <img
-                  src="/logo/ig_icon.png"
+                  src={igIcon}
                   alt="Instagram"
                   className="w-12 h-12 md:w-14 md:h-14 hover:scale-110 transition-transform duration-200"
                 />
@@ -183,7 +188,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
               >
                 <img
-                  src="/logo/fb_icon.png"
+                  src={fbIcon}
                   alt="Facebook"
                   className="w-12 h-12 md:w-14 md:h-14 hover:scale-110 transition-transform duration-200"
                 />

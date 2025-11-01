@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const IMAGES = ["/image/scroll1.jpeg", "/image/scroll2.jpeg"];
+import img1 from "../assets/image/scroll1.jpeg";
+import img2 from "../assets/image/scroll2.jpeg";
 
-export default function HeroCarousel({ intervalMs = 3000 }) {
+const IMAGES = [img1, img2];
+
+export default function HeroCarousel({ intervalMs = 2000 }) {
   const [idx, setIdx] = useState(0);
   const timerRef = useRef(null);
 
   const prev = () => setIdx((p) => (p - 1 + IMAGES.length) % IMAGES.length);
   const next = () => setIdx((p) => (p + 1) % IMAGES.length);
 
-  // 自動播放（5 秒）
+  // 自動播放（2 秒）
   useEffect(() => {
     // 先清一次，避免重複計時器
     clearInterval(timerRef.current);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { scrollToSection } from "../lib/scrollToSection";
+import logo from "../assets/logo/Shh_logo.jpg";
 
 const navItems = [
   { id: "home", label: "首頁" },
@@ -37,7 +38,7 @@ export default function Navigation() {
             className="flex items-center cursor-pointer"
           >
             <img
-              src="/image/Shh_logo.jpg"
+              src={logo}
               alt="SHh Art Studio Logo"
               className="h-10 md:h-12 object-contain"
             />
