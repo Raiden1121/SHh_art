@@ -5,23 +5,11 @@ const teachers = [
     specialty: "油畫、壓克力、肌理創作",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400",
   },
-  {
-    name: "陳老師",
-    title: "專任教師",
-    specialty: "水彩、色鉛筆、插畫",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
-  },
-  {
-    name: "王老師",
-    title: "兒童美術教師",
-    specialty: "兒童創意美術、繪本創作",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400",
-  },
 ];
 
 export default function Teachers() {
   return (
-    <section id="teachers" className="min-h-screen bg-white py-16 md:py-24">
+    <section id="teachers" className="bg-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-4xl md:text-5xl font-light mb-4 tracking-wide">

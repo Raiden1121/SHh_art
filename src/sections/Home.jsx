@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <section
       id="home"
-      className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex flex-col"
+      className="bg-gradient-to-b from-gray-50 to-white flex flex-col"
     >
       <div className="max-w-6xl w-full mx-auto px-4 md:px-6">
         <HeroCarousel intervalMs={5000} />

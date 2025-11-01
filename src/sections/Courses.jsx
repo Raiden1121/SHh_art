@@ -33,7 +33,7 @@ const courses = [
 
 export default function Courses() {
   return (
-    <section id="courses" className="min-h-screen bg-gray-50 py-16 md:py-24">
+    <section id="courses" className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-4xl md:text-5xl font-light mb-4 tracking-wide">

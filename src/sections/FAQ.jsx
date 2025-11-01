@@ -31,9 +31,9 @@ const faqs = [
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
   return (
-    <section id="faq" className="min-h-screen bg-white py-16 md:py-24">
+    <section id="faq" className="bg-white">
       <div className="max-w-4xl mx-auto px-6">
-        <div className="text-center mb-12 md:mb-16">
+        <div className="text-center mb-6 md:mb-8">
           <h2 className="text-4xl md:text-5xl font-light mb-4 tracking-wide">
             常見問題
           </h2>

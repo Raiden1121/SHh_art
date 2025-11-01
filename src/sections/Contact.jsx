@@ -22,7 +22,7 @@ const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURICo
 
 export default function Contact() {
   return (
-    <section id="contact" className="min-h-screen bg-gray-50 py-16 md:py-24">
+    <section id="contact" className="bg-gray-50">
       <div className="max-w-6xl mx-auto px-6">
         {/* 標題 */}
         <div className="text-center mb-12 md:mb-16">
