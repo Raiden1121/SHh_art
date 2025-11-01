@@ -26,9 +26,7 @@ export default function Contact() {
       <div className="max-w-6xl mx-auto px-6">
         {/* 標題 */}
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-4xl md:text-5xl font-light mb-4 tracking-wide">
-            聯絡我們
-          </h2>
+          <h2 className="text-4xl md:text-5xl  mb-4 tracking-wide">聯絡我們</h2>
           <p className="text-sm md:text-base text-gray-600">
             歡迎預約參觀或課程諮詢
           </p>
@@ -82,9 +80,9 @@ export default function Contact() {
           </div>
 
           {/* 右側：聯絡資訊 */}
-          <div className="order-2 md:order-2 space-y-6 md:space-y-8">
+          <div className="order-2 md:order-2 space-y-6 md:space-y-8 ml-8">
             <div>
-              <h3 className="text-xl md:text-2xl font-light mb-4 md:mb-6 tracking-wide">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3 tracking-wide">
                 SHh Art Studio
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-6 md:mb-8">

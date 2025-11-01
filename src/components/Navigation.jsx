@@ -7,8 +7,6 @@ const navItems = [
   { id: "home", label: "首頁" },
   { id: "about", label: "關於我們" },
   { id: "courses", label: "課程介紹" },
-  { id: "teachers", label: "師資團隊" },
-  { id: "gallery", label: "學生作品" },
   { id: "faq", label: "常見問題" },
   { id: "contact", label: "聯絡我們" },
 ];

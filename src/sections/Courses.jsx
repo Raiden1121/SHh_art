@@ -36,9 +36,7 @@ export default function Courses() {
     <section id="courses" className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-4xl md:text-5xl font-light mb-4 tracking-wide">
-            課程介紹
-          </h2>
+          <h2 className="text-4xl md:text-5xl mb-4 tracking-wide">課程介紹</h2>
           <p className="text-sm md:text-base text-gray-600">
             多元課程選擇，找到最適合您的創作方式
           </p>
@@ -82,36 +80,6 @@ export default function Courses() {
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="mt-12 md:mt-16 bg-white p-6 md:p-10">
-          <h3 className="text-xl md:text-2xl font-light mb-6 tracking-wide">
-            優惠方案
-          </h3>
-          <div className="grid sm:grid-cols-2 gap-6">
-            <div className="flex items-start space-x-3">
-              <span className="text-2xl">🎁</span>
-              <div>
-                <div className="font-medium mb-1 text-sm md:text-base">
-                  早鳥優惠
-                </div>
-                <div className="text-xs md:text-sm text-gray-600">
-                  開課前兩週報名享 9 折優惠
-                </div>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3">
-              <span className="text-2xl">👥</span>
-              <div>
-                <div className="font-medium mb-1 text-sm md:text-base">
-                  團體報名
-                </div>
-                <div className="text-xs md:text-sm text-gray-600">
-                  3 人同行每人優惠 500 元
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
