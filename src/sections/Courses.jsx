@@ -1,6 +1,7 @@
 // Courses.jsx
 import { useState, useRef, useEffect } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const COURSES = [
   {
@@ -45,6 +46,7 @@ const AUTO_MS = 8000;
 const PAUSE_MS = 12000;
 
 export default function Courses() {
+  const navigate = useNavigate();
   const sortedCourses = [...COURSES].sort(
     (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)
   );
@@ -57,65 +59,6 @@ export default function Courses() {
   const total = sortedCourses.length;
   const prev = () => setIdx((p) => (p - 1 + total) % total);
   const next = () => setIdx((p) => (p + 1) % total);
-
-  // 動態注入「外殼流動邊匡」CSS
-  useEffect(() => {
-    const style = document.createElement("style");
-    style.id = "animated-border-css";
-    style.textContent = `
-      @keyframes colorFlow {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
-      .animated-border {
-        position: relative;
-        isolation: isolate; /* 建立獨立層疊上下文 */
-        border-radius: 20px;
-        padding: 6px; /* 邊匡厚度 */
-        background: linear-gradient(
-          135deg,
-          #ff8800 0%,
-          #ffaa00 25%,
-          #ff6b4d 50%,
-          #ff3366 75%,
-          #ff1493 100%
-        );
-        background-size: 200% 200%;
-        animation: colorFlow 4s ease-in-out infinite;
-      }
-      /* 流動光暈層（跟邊框顏色同步、一起流動） */
-      .animated-border::before {
-        content: "";
-        position: absolute;
-        inset: -8px; /* 光暈寬度 */
-        border-radius: 32px;
-        background: linear-gradient(
-          135deg,
-          #ff8800 0%,
-          #ffaa00 25%,
-          #ff6b4d 50%,
-          #ff3366 75%,
-          #ff1493 100%
-        );
-        background-size: 200% 200%;
-        animation: colorFlow 4s ease-in-out infinite;
-        filter: blur(25px); /* 柔和度 */
-        opacity: 0.7; /* 光暈強度 */
-        z-index: -1;
-        pointer-events: none;
-      }
-      .animated-border-inner {
-        border-radius: 16px;
-        background: #fff;
-        overflow: hidden;
-        position: relative;
-        z-index: 0;
-      }
-    `;
-    document.head.appendChild(style);
-    return () => document.getElementById("animated-border-css")?.remove();
-  }, []);
 
   // 自動播放
   useEffect(() => {
@@ -172,7 +115,10 @@ export default function Courses() {
       >
         {sortedCourses.map((c, i) => (
           <div key={c.id} className="min-w-full relative">
-            <article className="flex flex-col bg-white rounded-2xl overflow-hidden">
+            <article
+              data-course-id={c.id}
+              className="flex flex-col bg-white rounded-2xl overflow-hidden"
+            >
               {c.featured && (
                 <div className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-xs md:text-sm px-3 py-1 rounded-full shadow-lg z-10">
                   限時活動
@@ -206,15 +152,24 @@ export default function Courses() {
 
                 <div className="flex items-center justify-between mt-auto">
                   <div className="font-semibold">{c.price}</div>
-                  <a
-                    href="#contact"
-                    onClick={() =>
-                      (pauseUntilRef.current = Date.now() + PAUSE_MS)
-                    }
+                  <button
+                    onClick={() => {
+                      // zoom in 動畫後跳轉
+                      const card = document.querySelector(
+                        `[data-course-id="${c.id}"]`
+                      );
+                      if (card) {
+                        card.style.transform = "scale(1.05)";
+                        card.style.transition = "transform 0.3s ease-out";
+                      }
+                      setTimeout(() => {
+                        navigate(`/course/${c.id}`);
+                      }, 300);
+                    }}
                     className="px-4 py-2 text-sm md:text-base rounded border border-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
                   >
                     了解更多
-                  </a>
+                  </button>
                 </div>
               </div>
             </article>
