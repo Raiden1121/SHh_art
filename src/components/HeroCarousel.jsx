@@ -28,8 +28,29 @@ export default function HeroCarousel({ intervalMs = 2000 }) {
     timerRef.current = setInterval(next, intervalMs);
   };
 
+  // 觸控滑動
+  useEffect(() => {
+    let startX = 0;
+    const el = document.getElementById("hero-carousel");
+    if (!el) return;
+    const onTouchStart = (e) => (startX = e.touches[0].clientX);
+    const onTouchEnd = (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) {
+        dx > 0 ? prev() : next();
+      }
+    };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchend", onTouchEnd, { passive: true });
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [idx]);
+
   return (
     <div
+      id="hero-carousel"
       className="relative w-full overflow-hidden rounded-none"
       onMouseEnter={pause}
       onMouseLeave={resume}
@@ -40,7 +61,7 @@ export default function HeroCarousel({ intervalMs = 2000 }) {
         style={{ transform: `translateX(-${idx * 100}%)` }}
       >
         {IMAGES.map((src, i) => (
-          <div key={i} className="min-w-full h-[60vh] md:h-[70vh]">
+          <div key={i} className="min-w-full aspect-[16/14]">
             <img
               src={src}
               alt={`slide-${i}`}
@@ -51,18 +72,18 @@ export default function HeroCarousel({ intervalMs = 2000 }) {
         ))}
       </div>
 
-      {/* 左右箭頭 */}
+      {/* 左右箭頭（手機隱藏，桌機顯示） */}
       <button
         aria-label="prev"
         onClick={prev}
-        className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2"
+        className="hidden md:block absolute left-3 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors"
       >
         <ChevronLeft />
       </button>
       <button
         aria-label="next"
         onClick={next}
-        className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2"
+        className="hidden md:block absolute right-3 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors"
       >
         <ChevronRight />
       </button>

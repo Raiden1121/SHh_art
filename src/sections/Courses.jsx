@@ -42,7 +42,7 @@ const COURSES = [
 ];
 
 const AUTO_MS = 8000;
-const PAUSE_MS = 10000;
+const PAUSE_MS = 12000;
 
 export default function Courses() {
   const sortedCourses = [...COURSES].sort(
@@ -70,6 +70,7 @@ export default function Courses() {
       }
       .animated-border {
         position: relative;
+        isolation: isolate; /* 建立獨立層疊上下文 */
         border-radius: 20px;
         padding: 6px; /* 邊匡厚度 */
         background: linear-gradient(
@@ -81,12 +82,28 @@ export default function Courses() {
           #ff1493 100%
         );
         background-size: 200% 200%;
-        animation: colorFlow 1s ease-in-out infinite;
-        box-shadow:
-          0 0 40px rgba(255, 136, 0, 0.8),
-          0 0 80px rgba(255, 51, 102, 0.6),
-          0 0 120px rgba(255, 20, 147, 0.4),
-          0 0 160px rgba(255, 20, 147, 0.2);
+        animation: colorFlow 4s ease-in-out infinite;
+      }
+      /* 流動光暈層（跟邊框顏色同步、一起流動） */
+      .animated-border::before {
+        content: "";
+        position: absolute;
+        inset: -8px; /* 光暈寬度 */
+        border-radius: 32px;
+        background: linear-gradient(
+          135deg,
+          #ff8800 0%,
+          #ffaa00 25%,
+          #ff6b4d 50%,
+          #ff3366 75%,
+          #ff1493 100%
+        );
+        background-size: 200% 200%;
+        animation: colorFlow 4s ease-in-out infinite;
+        filter: blur(25px); /* 柔和度 */
+        opacity: 0.7; /* 光暈強度 */
+        z-index: -1;
+        pointer-events: none;
       }
       .animated-border-inner {
         border-radius: 16px;
@@ -205,14 +222,14 @@ export default function Courses() {
         ))}
       </div>
 
-      {/* 左右箭頭 */}
+      {/* 左右箭頭（手機隱藏，桌機顯示） */}
       <button
         aria-label="prev"
         onClick={() => {
           pauseUntilRef.current = Date.now() + PAUSE_MS;
           prev();
         }}
-        className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-gray-900 shadow hover:bg-white transition-colors z-10"
+        className="hidden md:block absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-gray-900 shadow hover:bg-white transition-colors z-10"
       >
         <ChevronLeft />
       </button>
@@ -222,7 +239,7 @@ export default function Courses() {
           pauseUntilRef.current = Date.now() + PAUSE_MS;
           next();
         }}
-        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-gray-900 shadow hover:bg-white transition-colors z-10"
+        className="hidden md:block absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-gray-900 shadow hover:bg-white transition-colors z-10"
       >
         <ChevronRight />
       </button>
