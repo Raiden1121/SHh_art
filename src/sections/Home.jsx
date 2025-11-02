@@ -8,7 +8,10 @@ export default function Home() {
       className="bg-gradient-to-b from-gray-50 to-white flex flex-col"
     >
       <div className="max-w-6xl w-full mx-auto px-4 md:px-6">
-        <HeroCarousel intervalMs={5000} />
+        {/* Hero 輪播容器，950px 後固定大小 */}
+        <div className="w-full mx-auto" style={{ maxWidth: "950px" }}>
+          <HeroCarousel intervalMs={5000} />
+        </div>
 
         {/* 文字連結 */}
         <div className="flex justify-center gap-16 text-base tracking-widest mt-5 mb-12">

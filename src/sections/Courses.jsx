@@ -1,4 +1,3 @@
-// Courses.jsx
 import { useState, useRef, useEffect } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -47,16 +46,13 @@ const PAUSE_MS = 12000;
 
 export default function Courses() {
   const navigate = useNavigate();
-  const sortedCourses = [...COURSES].sort(
-    (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)
-  );
 
   const [idx, setIdx] = useState(0);
   const timerRef = useRef(null);
   const pauseUntilRef = useRef(0);
   const hoverRef = useRef(false);
 
-  const total = sortedCourses.length;
+  const total = COURSES.length;
   const prev = () => setIdx((p) => (p - 1 + total) % total);
   const next = () => setIdx((p) => (p + 1) % total);
 
@@ -78,25 +74,47 @@ export default function Courses() {
   // 觸控滑動
   useEffect(() => {
     let startX = 0;
-    const el = document.getElementById("courses-carousel"); // 綁在真正滑動那層
+    let startY = 0;
+    let isDragging = false;
+    const el = document.getElementById("courses-carousel");
     if (!el) return;
-    const onTouchStart = (e) => (startX = e.touches[0].clientX);
+
+    const onTouchStart = (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      isDragging = false;
+    };
+
+    const onTouchMove = (e) => {
+      const dx = Math.abs(e.touches[0].clientX - startX);
+      const dy = Math.abs(e.touches[0].clientY - startY);
+      // 如果水平滑動距離大於垂直，則為拖動
+      if (dx > dy && dx > 10) {
+        isDragging = true;
+      }
+    };
+
     const onTouchEnd = (e) => {
+      if (!isDragging) return;
       const dx = e.changedTouches[0].clientX - startX;
       if (Math.abs(dx) > 50) {
         pauseUntilRef.current = Date.now() + PAUSE_MS;
         dx > 0 ? prev() : next();
       }
+      isDragging = false;
     };
+
     el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: true });
     el.addEventListener("touchend", onTouchEnd, { passive: true });
     return () => {
       el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
       el.removeEventListener("touchend", onTouchEnd);
     };
   }, [idx]);
 
-  const isFeatured = Boolean(sortedCourses[idx]?.featured);
+  const isFeatured = Boolean(COURSES[idx]?.featured);
 
   // 主要 Carousel 內容（保持一份）
   const carousel = (
@@ -110,14 +128,14 @@ export default function Courses() {
       }}
     >
       <div
-        className="flex transition-transform duration-700 ease-out"
+        className="flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${idx * 100}%)` }}
       >
-        {sortedCourses.map((c, i) => (
-          <div key={c.id} className="min-w-full relative">
+        {COURSES.map((c, i) => (
+          <div key={c.id} className="min-w-full relative flex">
             <article
               data-course-id={c.id}
-              className="flex flex-col bg-white rounded-2xl overflow-hidden"
+              className="flex flex-col bg-white rounded-2xl overflow-hidden w-full"
             >
               {c.featured && (
                 <div className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-xs md:text-sm px-3 py-1 rounded-full shadow-lg z-10">
@@ -134,24 +152,26 @@ export default function Courses() {
                 />
               </div>
 
-              <div className="flex-1 p-6 md:p-8 flex flex-col justify-between">
+              <div className="flex-1 p-4 md:p-5 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-xl md:text-2xl font-medium mb-2">
+                  <h3 className="text-lg md:text-xl font-medium mb-1.5">
                     {c.title}
                   </h3>
-                  <p className="text-gray-600 mb-4">{c.desc}</p>
-                  <ul className="text-sm md:text-base text-gray-700 space-y-1 mb-5">
+                  <p className="text-gray-600 text-sm mb-2.5">{c.desc}</p>
+                  <ul className="text-xs md:text-sm text-gray-700 space-y-0.5 mb-3">
                     {c.bullets.map((b, k) => (
                       <li key={k} className="flex items-start gap-2">
-                        <span className="mt-2 block h-1.5 w-1.5 rounded-full bg-gray-800" />
+                        <span className="mt-1.5 block h-1 w-1 rounded-full bg-gray-800 flex-shrink-0" />
                         {b}
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="font-semibold">{c.price}</div>
+                <div className="flex items-center justify-between mt-auto pt-2">
+                  <div className="font-semibold text-sm md:text-base">
+                    {c.price}
+                  </div>
                   <button
                     onClick={() => {
                       // zoom in 動畫後跳轉
@@ -166,7 +186,7 @@ export default function Courses() {
                         navigate(`/course/${c.id}`);
                       }, 300);
                     }}
-                    className="px-4 py-2 text-sm md:text-base rounded border border-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
+                    className="px-3 py-1.5 text-xs md:text-sm rounded border border-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
                   >
                     了解更多
                   </button>
@@ -201,7 +221,7 @@ export default function Courses() {
 
       {/* 圓點 */}
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-        {sortedCourses.map((_, i) => (
+        {COURSES.map((_, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}
@@ -225,7 +245,7 @@ export default function Courses() {
             多元課程選擇,找到最適合你的創作方式
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3 md:gap-4">
-            {sortedCourses.map((c, i) => (
+            {COURSES.map((c, i) => (
               <button
                 key={c.id}
                 onClick={() => goTo(i)}
@@ -246,14 +266,14 @@ export default function Courses() {
           </div>
         </div>
 
-        {/* Carousel 外層：依 featured 套/不套流動邊匡 */}
-        {isFeatured ? (
-          <div className="animated-border">
-            <div className="animated-border-inner">{carousel}</div>
+        {/* Carousel 外層 */}
+        <div className="mx-auto" style={{ maxWidth: "730px" }}>
+          <div className={isFeatured ? "animated-border" : ""}>
+            <div className={isFeatured ? "animated-border-inner" : ""}>
+              {carousel}
+            </div>
           </div>
-        ) : (
-          carousel
-        )}
+        </div>
       </div>
     </section>
   );

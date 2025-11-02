@@ -15,7 +15,7 @@
   animation: fadeIn 0.8s ease-out forwards;
 }
 
-/* 課程卡片動畫邊框 */
+/* 課程卡片動畫邊框 - 使用偽元素避免改變容器大小 */
 @keyframes colorFlow {
   0% {
     background-position: 0% 50%;
@@ -32,7 +32,14 @@
   position: relative;
   isolation: isolate;
   border-radius: 20px;
-  padding: 6px;
+}
+
+/* 使用 ::after 創建流動邊框，不影響內容布局 */
+.animated-border::after {
+  content: "";
+  position: absolute;
+  inset: -6px; /* 邊框寬度 */
+  border-radius: 26px;
   background: linear-gradient(
     135deg,
     #ff8800 0%,
@@ -42,14 +49,17 @@
     #ff1493 100%
   );
   background-size: 200% 200%;
-  animation: colorFlow 4s ease-in-out infinite;
+  animation: colorFlow 2s ease-in-out infinite;
+  z-index: -2;
+  pointer-events: none;
 }
 
+/* 光暈層 */
 .animated-border::before {
   content: "";
   position: absolute;
-  inset: -8px;
-  border-radius: 32px;
+  inset: -14px; /* 光暈範圍 */
+  border-radius: 34px;
   background: linear-gradient(
     135deg,
     #ff8800 0%,
@@ -59,15 +69,15 @@
     #ff1493 100%
   );
   background-size: 200% 200%;
-  animation: colorFlow 4s ease-in-out infinite;
+  animation: colorFlow 2s ease-in-out infinite;
   filter: blur(25px);
   opacity: 0.7;
-  z-index: -1;
+  z-index: -3;
   pointer-events: none;
 }
 
 .animated-border-inner {
-  border-radius: 16px;
+  border-radius: 20px;
   background: #fff;
   overflow: hidden;
   position: relative;

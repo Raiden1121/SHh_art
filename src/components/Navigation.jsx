@@ -30,7 +30,7 @@ export default function Navigation() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-20 md:h-24">
+        <div className="flex justify-between items-center h-16 md:h-20">
           <button
             onClick={() => scrollToSection("home")}
             className="flex items-center cursor-pointer"
