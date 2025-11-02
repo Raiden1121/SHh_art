@@ -4,7 +4,7 @@ export default function About() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
           <div>
-            <h2 className="text-4xl md:text-5xl font-light mb-6 md:mb-8 tracking-wide">
+            <h2 className="text-4xl md:text-5xl mb-6 md:mb-8 tracking-wide">
               關於我們
             </h2>
             <div className="space-y-4 md:space-y-6 text-gray-700 leading-relaxed">

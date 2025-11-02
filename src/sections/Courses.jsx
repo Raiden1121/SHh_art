@@ -1,3 +1,4 @@
+// Courses.jsx
 import { useState, useRef, useEffect } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 
@@ -10,7 +11,7 @@ const COURSES = [
     price: "NT$ 7,200",
     cover:
       "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=1200",
-    featured: true, // ✅ 特殊課程
+    featured: true,
   },
   {
     id: "oil-pastel",
@@ -40,11 +41,10 @@ const COURSES = [
   },
 ];
 
-const AUTO_MS = 4000;
-const PAUSE_MS = 5000;
+const AUTO_MS = 8000;
+const PAUSE_MS = 10000;
 
 export default function Courses() {
-  // featured 課程永遠排最前
   const sortedCourses = [...COURSES].sort(
     (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)
   );
@@ -58,6 +58,48 @@ export default function Courses() {
   const prev = () => setIdx((p) => (p - 1 + total) % total);
   const next = () => setIdx((p) => (p + 1) % total);
 
+  // 動態注入「外殼流動邊匡」CSS
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.id = "animated-border-css";
+    style.textContent = `
+      @keyframes colorFlow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      .animated-border {
+        position: relative;
+        border-radius: 20px;
+        padding: 6px; /* 邊匡厚度 */
+        background: linear-gradient(
+          135deg,
+          #ff8800 0%,
+          #ffaa00 25%,
+          #ff6b4d 50%,
+          #ff3366 75%,
+          #ff1493 100%
+        );
+        background-size: 200% 200%;
+        animation: colorFlow 1s ease-in-out infinite;
+        box-shadow:
+          0 0 40px rgba(255, 136, 0, 0.8),
+          0 0 80px rgba(255, 51, 102, 0.6),
+          0 0 120px rgba(255, 20, 147, 0.4),
+          0 0 160px rgba(255, 20, 147, 0.2);
+      }
+      .animated-border-inner {
+        border-radius: 16px;
+        background: #fff;
+        overflow: hidden;
+        position: relative;
+        z-index: 0;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => document.getElementById("animated-border-css")?.remove();
+  }, []);
+
   // 自動播放
   useEffect(() => {
     clearInterval(timerRef.current);
@@ -68,16 +110,15 @@ export default function Courses() {
     return () => clearInterval(timerRef.current);
   }, []);
 
-  // 點擊課程按鈕後暫停
   const goTo = (i) => {
     setIdx(i);
     pauseUntilRef.current = Date.now() + PAUSE_MS;
   };
 
-  // 手機觸控滑動
+  // 觸控滑動
   useEffect(() => {
     let startX = 0;
-    const el = document.getElementById("courses-carousel");
+    const el = document.getElementById("courses-carousel"); // 綁在真正滑動那層
     if (!el) return;
     const onTouchStart = (e) => (startX = e.touches[0].clientX);
     const onTouchEnd = (e) => {
@@ -93,18 +134,123 @@ export default function Courses() {
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchend", onTouchEnd);
     };
-  }, []);
+  }, [idx]);
+
+  const isFeatured = Boolean(sortedCourses[idx]?.featured);
+
+  // 主要 Carousel 內容（保持一份）
+  const carousel = (
+    <div
+      id="courses-carousel"
+      className="relative w-full overflow-hidden rounded-2xl shadow-lg"
+      onMouseEnter={() => (hoverRef.current = true)}
+      onMouseLeave={() => {
+        hoverRef.current = false;
+        pauseUntilRef.current = Date.now() + PAUSE_MS;
+      }}
+    >
+      <div
+        className="flex transition-transform duration-700 ease-out"
+        style={{ transform: `translateX(-${idx * 100}%)` }}
+      >
+        {sortedCourses.map((c, i) => (
+          <div key={c.id} className="min-w-full relative">
+            <article className="flex flex-col bg-white rounded-2xl overflow-hidden">
+              {c.featured && (
+                <div className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-xs md:text-sm px-3 py-1 rounded-full shadow-lg z-10">
+                  限時活動
+                </div>
+              )}
+
+              <div className="aspect-[16/9] w-full overflow-hidden">
+                <img
+                  src={c.cover}
+                  alt={c.title}
+                  className="block w-full h-full object-cover"
+                  loading={i === 0 ? "eager" : "lazy"}
+                />
+              </div>
+
+              <div className="flex-1 p-6 md:p-8 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xl md:text-2xl font-medium mb-2">
+                    {c.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4">{c.desc}</p>
+                  <ul className="text-sm md:text-base text-gray-700 space-y-1 mb-5">
+                    {c.bullets.map((b, k) => (
+                      <li key={k} className="flex items-start gap-2">
+                        <span className="mt-2 block h-1.5 w-1.5 rounded-full bg-gray-800" />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="font-semibold">{c.price}</div>
+                  <a
+                    href="#contact"
+                    onClick={() =>
+                      (pauseUntilRef.current = Date.now() + PAUSE_MS)
+                    }
+                    className="px-4 py-2 text-sm md:text-base rounded border border-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
+                  >
+                    了解更多
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+        ))}
+      </div>
+
+      {/* 左右箭頭 */}
+      <button
+        aria-label="prev"
+        onClick={() => {
+          pauseUntilRef.current = Date.now() + PAUSE_MS;
+          prev();
+        }}
+        className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-gray-900 shadow hover:bg-white transition-colors z-10"
+      >
+        <ChevronLeft />
+      </button>
+      <button
+        aria-label="next"
+        onClick={() => {
+          pauseUntilRef.current = Date.now() + PAUSE_MS;
+          next();
+        }}
+        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-gray-900 shadow hover:bg-white transition-colors z-10"
+      >
+        <ChevronRight />
+      </button>
+
+      {/* 圓點 */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+        {sortedCourses.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className={`h-2 w-2 rounded-full transition-all ${
+              idx === i ? "w-6 bg-gray-900" : "bg-gray-400/70 hover:bg-gray-600"
+            }`}
+            aria-label={`dot-${i}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
 
   return (
-    <section id="courses" className="bg-white">
+    <section id="courses" className="bg-white py-16">
       <div className="max-w-6xl mx-auto px-6">
         {/* Tabs */}
         <div className="text-center mb-6 md:mb-8">
-          <h2 className="text-3xl md:text-4xl font-light tracking-wide">
-            課程介紹
-          </h2>
+          <h2 className="text-3xl md:text-5xl tracking-wide">課程介紹</h2>
           <p className="text-sm md:text-base text-gray-600 mt-2">
-            多元課程選擇，找到最適合你的創作方式
+            多元課程選擇,找到最適合你的創作方式
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3 md:gap-4">
             {sortedCourses.map((c, i) => (
@@ -114,7 +260,11 @@ export default function Courses() {
                 className={`px-3 py-1.5 text-sm md:text-base transition-colors border rounded
                 ${
                   i === idx
-                    ? "bg-[#1D4D9E] text-white border-[#1D4D9E]"
+                    ? c.featured
+                      ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white border-transparent"
+                      : "bg-[#1D4D9E] text-white border-[#1D4D9E]"
+                    : c.featured
+                    ? "text-orange-500 border-orange-500 hover:bg-orange-50"
                     : "text-[#1D4D9E] border-[#1D4D9E] hover:bg-[#1D4D9E]/10"
                 }`}
               >
@@ -124,118 +274,14 @@ export default function Courses() {
           </div>
         </div>
 
-        {/* Carousel */}
-        <div
-          id="courses-carousel"
-          className="relative w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5"
-          onMouseEnter={() => (hoverRef.current = true)}
-          onMouseLeave={() => {
-            hoverRef.current = false;
-            pauseUntilRef.current = Date.now() + PAUSE_MS;
-          }}
-        >
-          <div
-            className="flex transition-transform duration-700 ease-out"
-            style={{ transform: `translateX(-${idx * 100}%)` }}
-          >
-            {sortedCourses.map((c, i) => (
-              <article
-                key={c.id}
-                className={`min-w-full flex flex-col relative ${
-                  c.featured
-                    ? "ring-4 ring-[#1D4D9E] scale-[1.01] shadow-2xl transition-transform"
-                    : "bg-white"
-                }`}
-              >
-                {/* 特殊課程標籤 */}
-                {c.featured && (
-                  <div className="absolute top-3 left-3 bg-[#1D4D9E] text-white text-xs md:text-sm px-3 py-1 rounded-full shadow">
-                    ⭐ 限時活動
-                  </div>
-                )}
-
-                {/* 圖片區塊 */}
-                <div className="aspect-[16/9] w-full overflow-hidden">
-                  <img
-                    src={c.cover}
-                    alt={c.title}
-                    className="block w-full h-full object-cover"
-                    loading={i === 0 ? "eager" : "lazy"}
-                  />
-                </div>
-
-                {/* 文字內容 */}
-                <div className="flex-1 p-6 md:p-8 flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-medium mb-2">
-                      {c.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4">{c.desc}</p>
-                    <ul className="text-sm md:text-base text-gray-700 space-y-1 mb-5">
-                      {c.bullets.map((b, k) => (
-                        <li key={k} className="flex items-start gap-2">
-                          <span className="mt-2 block h-1.5 w-1.5 rounded-full bg-gray-800" />
-                          {b}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="flex items-center justify-between mt-auto">
-                    <div className="font-semibold">{c.price}</div>
-                    <a
-                      href="#contact"
-                      onClick={() =>
-                        (pauseUntilRef.current = Date.now() + PAUSE_MS)
-                      }
-                      className="px-4 py-2 text-sm md:text-base rounded border border-gray-900 hover:bg-gray-900 hover:text-white transition-colors"
-                    >
-                      了解更多
-                    </a>
-                  </div>
-                </div>
-              </article>
-            ))}
+        {/* Carousel 外層：依 featured 套/不套流動邊匡 */}
+        {isFeatured ? (
+          <div className="animated-border">
+            <div className="animated-border-inner">{carousel}</div>
           </div>
-
-          {/* 左右箭頭 */}
-          <button
-            aria-label="prev"
-            onClick={() => {
-              pauseUntilRef.current = Date.now() + PAUSE_MS;
-              prev();
-            }}
-            className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-gray-900 shadow hover:bg-white"
-          >
-            <ChevronLeft />
-          </button>
-          <button
-            aria-label="next"
-            onClick={() => {
-              pauseUntilRef.current = Date.now() + PAUSE_MS;
-              next();
-            }}
-            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-gray-900 shadow hover:bg-white"
-          >
-            <ChevronRight />
-          </button>
-
-          {/* 圓點 */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-            {sortedCourses.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className={`h-2 w-2 rounded-full transition-all ${
-                  idx === i
-                    ? "w-6 bg-gray-900"
-                    : "bg-gray-400/70 hover:bg-gray-600"
-                }`}
-                aria-label={`dot-${i}`}
-              />
-            ))}
-          </div>
-        </div>
+        ) : (
+          carousel
+        )}
       </div>
     </section>
   );

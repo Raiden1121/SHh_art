@@ -34,9 +34,7 @@ export default function FAQ() {
     <section id="faq" className="bg-white">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-6 md:mb-8">
-          <h2 className="text-4xl md:text-5xl font-light mb-4 tracking-wide">
-            常見問題
-          </h2>
+          <h2 className="text-4xl md:text-5xl mb-4 tracking-wide">常見問題</h2>
           <p className="text-sm md:text-base text-gray-600">
             關於課程的疑問解答
           </p>
