@@ -6,14 +6,14 @@ import img2 from "../assets/image/scroll2.jpeg";
 
 const IMAGES = [img1, img2];
 
-export default function HeroCarousel({ intervalMs = 2000 }) {
+export default function HeroCarousel({ intervalMs = 1000 }) {
   const [idx, setIdx] = useState(0);
   const timerRef = useRef(null);
 
   const prev = () => setIdx((p) => (p - 1 + IMAGES.length) % IMAGES.length);
   const next = () => setIdx((p) => (p + 1) % IMAGES.length);
 
-  // 自動播放（2 秒）
+  // 自動播放
   useEffect(() => {
     // 先清一次，避免重複計時器
     clearInterval(timerRef.current);

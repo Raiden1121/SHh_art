@@ -151,7 +151,7 @@ export default function CourseDetail() {
       {/* 返回按鈕 */}
       <button
         onClick={handleBack}
-        className="fixed top-28 left-6 z-50 flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur rounded-full shadow-lg hover:bg-white transition-colors group"
+        className="fixed top-28 left-6 z-50 flex items-center gap-2 px-4 py-2 bg-[#153a78] backdrop-blur rounded-full shadow-lg hover:bg-white text-white transition-colors group"
       >
         <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
         <span className="text-sm font-medium">返回課程</span>

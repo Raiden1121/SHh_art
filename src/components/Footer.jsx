@@ -1,3 +1,5 @@
+import { scrollToSection } from "../lib/scrollToSection";
+
 export default function Footer() {
   return (
     <footer className="bg-[#153a78] text-white py-8 md:py-12">
@@ -19,33 +21,36 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-xs md:text-sm text-gray-300">
               <li>
-                <a href="#about" className="hover:text-white transition-colors">
+                <button
+                  onClick={() => scrollToSection("about")}
+                  className="hover:text-white transition-colors text-left"
+                >
                   關於我們
-                </a>
+                </button>
               </li>
               <li>
-                <a
-                  href="#courses"
-                  className="hover:text-white transition-colors"
+                <button
+                  onClick={() => scrollToSection("courses")}
+                  className="hover:text-white transition-colors text-left"
                 >
                   課程介紹
-                </a>
+                </button>
               </li>
               <li>
-                <a
-                  href="#teachers"
-                  className="hover:text-white transition-colors"
+                <button
+                  onClick={() => scrollToSection("faq")}
+                  className="hover:text-white transition-colors text-left"
                 >
-                  師資團隊
-                </a>
+                  常見問題
+                </button>
               </li>
               <li>
-                <a
-                  href="#contact"
-                  className="hover:text-white transition-colors"
+                <button
+                  onClick={() => scrollToSection("contact")}
+                  className="hover:text-white transition-colors text-left"
                 >
                   聯絡我們
-                </a>
+                </button>
               </li>
             </ul>
           </div>

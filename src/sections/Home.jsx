@@ -9,7 +9,7 @@ export default function Home() {
     >
       <div className="max-w-6xl w-full mx-auto px-4 md:px-6">
         {/* Hero 輪播容器，950px 後固定大小 */}
-        <div className="w-full mx-auto" style={{ maxWidth: "950px" }}>
+        <div className="w-full mx-auto" style={{ maxWidth: "860px" }}>
           <HeroCarousel intervalMs={5000} />
         </div>
 
