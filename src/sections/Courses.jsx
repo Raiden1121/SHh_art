@@ -266,12 +266,16 @@ export default function Courses() {
           </div>
         </div>
 
-        {/* Carousel 外層 */}
+        {/* Carousel 外層 - 始終保持相同結構避免重排 */}
         <div className="mx-auto" style={{ maxWidth: "730px" }}>
-          <div className={isFeatured ? "animated-border" : ""}>
-            <div className={isFeatured ? "animated-border-inner" : ""}>
-              {carousel}
-            </div>
+          <div
+            className="animated-border"
+            style={{
+              "--border-opacity": isFeatured ? "1" : "0",
+              "--glow-opacity": isFeatured ? "0.7" : "0",
+            }}
+          >
+            <div className="animated-border-inner">{carousel}</div>
           </div>
         </div>
       </div>
